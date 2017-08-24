@@ -1,0 +1,1 @@
+This is Slack bot which takes care of our parking reservations.
