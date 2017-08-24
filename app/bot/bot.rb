@@ -56,8 +56,21 @@ class Bot < SlackRubyBot::Bot
     client.say(text: message, channel: data.channel)
   end
 
-  command 'ping' do |client, data, match|
-    client.say(text: 'pong', channel: data.channel)
+  help do
+    title 'Parking Bot'
+    desc 'I can reserve parking slot at Saldova like nobody else.'
+
+    command 'reserve <date>' do
+      desc 'Reserves a parking slot on given day for you. If no date is given, tomorrow is used.'
+    end
+
+    command 'capacity <date>' do
+      desc 'Tells you the capacity of the parking lot for the given day. If no date is given, tomorrow is used.'
+    end
+
+    command 'cancel <date>' do
+      desc 'Cancels all your reservations on the given day. If no date is given, tomorrow is used.'
+    end
   end
 
   def self.find_or_create_user(slack_id, slack_client)
