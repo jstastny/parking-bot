@@ -62,7 +62,6 @@ class Bot < SlackRubyBot::Bot
 
   def self.find_or_create_user(slack_id, slack_client)
     User.find_or_create_by!(slack_id: slack_id) do |user|
-      ap slack_client.web_client.users_info(user: slack_id)['user']['real_name']
       user.display_name = slack_client.web_client.users_info(user: slack_id)['user']['real_name']
     end
   end
