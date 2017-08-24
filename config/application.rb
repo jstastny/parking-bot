@@ -30,6 +30,8 @@ module BookBot
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    config.time_zone = 'Europe/Prague'
+
     config.logger = Logger.new(STDOUT)
   end
 end
