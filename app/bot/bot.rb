@@ -10,7 +10,7 @@ class Bot < SlackRubyBot::Bot
         message += ":tada: There #{available_spots.count == 1 ? 'is' : 'are'} #{available_spots.count} available " +
             "#{'spot'.pluralize(available_spots.count)}: #{available_spots.map(&:name).to_sentence}.\n"
       else
-        message += ":crying_cat_face: There are unfortunatelly not more available parking spots.\n"
+        message += ":crying_cat_face: There are unfortunatelly no more available parking spots.\n"
       end
       unless reservations.empty?
         message += "There are following reservations:\n"
