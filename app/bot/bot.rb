@@ -15,7 +15,7 @@ class Bot < SlackRubyBot::Bot
       unless reservations.empty?
         message += "There are following reservations:\n"
         reservations.each do |reservation|
-          message += " - Parking spot #{reservation.parking_spot.name} reserved by #{reservation.user.display_name}\n"
+          message += " • Parking spot #{reservation.parking_spot.name} reserved by #{reservation.user.display_name}\n"
         end
       end
 
