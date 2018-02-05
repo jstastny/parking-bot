@@ -72,15 +72,15 @@ class Bot < SlackRubyBot::Bot
     desc 'I can reserve parking slot at Saldova like nobody else.'
 
     command 'reserve <date>' do
-      desc 'Reserves a parking slot on given day for you. If no date is given, tomorrow is used.'
+      desc 'Reserves a parking slot on given day for you. If no date is given, today is used.'
     end
 
     command 'capacity <date>' do
-      desc 'Tells you the capacity of the parking lot for the given day. If no date is given, tomorrow is used.'
+      desc 'Tells you the capacity of the parking lot for the given day. If no date is given, today is used.'
     end
 
     command 'cancel <date>' do
-      desc 'Cancels all your reservations on the given day. If no date is given, tomorrow is used.'
+      desc 'Cancels all your reservations on the given day. If no date is given, today is used.'
     end
   end
 
@@ -100,7 +100,7 @@ class Bot < SlackRubyBot::Bot
 
       parsed.to_date
     else
-      1.day.from_now.to_date
+      Date.today
     end
   end
 
