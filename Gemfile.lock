@@ -56,7 +56,7 @@ GEM
     faye-websocket (0.10.7)
       eventmachine (>= 0.12.0)
       websocket-driver (>= 0.5.1)
-    ffi (1.9.23)
+    ffi (1.9.25)
     gli (2.17.1)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
