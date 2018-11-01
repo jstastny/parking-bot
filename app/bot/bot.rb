@@ -8,7 +8,7 @@ class Bot < SlackRubyBot::Bot
       message = "Capacity on #{Bot.format_date(date)}:\n"
       unless available_spots.empty?
         message += ":tada: There #{available_spots.count == 1 ? 'is' : 'are'} #{available_spots.count} available " +
-            "#{'spot'.pluralize(available_spots.count)}: #{available_spots.map(&:name).to_sentence}.\n"
+          "#{'spot'.pluralize(available_spots.count)}: #{available_spots.map(&:name).to_sentence}.\n"
       else
         message += ":crying_cat_face: There are unfortunatelly no more available parking spots.\n"
       end
@@ -24,26 +24,30 @@ class Bot < SlackRubyBot::Bot
 
   end
 
-  match /reserve\s?(?<date>.*)/i do |client, data, match|
+  match /reserve\s?(spot (?<spot>[0-9]+))?\s?(?<date>.*)/i do |client, data, match|
     user = Bot.find_or_create_user(data.user, client)
     date = Bot.parse_user_date(match[:date], client, data)
+    spot_name = match[:spot]
     if date
-
       begin
-        reservation = ReservationService.new.create_reservation(user.id, date, date)
+        reservation = ReservationService.new.create_reservation(user.id, date, date, parking_spot_name: spot_name)
         client.say(
-            text: ":tada: I have reserved parking spot *#{reservation.parking_spot.name}* for you on: #{Bot.format_date(date)}. ",
-            channel: data.channel
+          text: ":tada: I have reserved parking spot *#{reservation.parking_spot.name}* for you on: #{Bot.format_date(date)}. ",
+          channel: data.channel
         )
 
       rescue ReservationService::NoAvailableParkingSpots
+        message = if spot_name
+                    ":crying_cat_face: Sorry, the parking spot #{spot_name} is not available on #{Bot.format_date(date)}."
+                  else
+                    ":crying_cat_face: Sorry, there are no available parking spots on #{Bot.format_date(date)}."
+                  end
         client.say(
-            text: ":crying_cat_face: Sorry, there are no available parking lots on #{Bot.format_date(date)}.",
-            channel: data.channel
+          text: message,
+          channel: data.channel
         )
       end
     end
-
   end
 
   match /cancel\s?(?<date>.*)/i do |client, data, match|
@@ -60,7 +64,7 @@ class Bot < SlackRubyBot::Bot
         parking_spot_names = reservations.map(&:parking_spot).map(&:name)
         reservations.delete_all
         message = "I have cancelled all your #{'reservation'.pluralize(parking_spot_names.count)} on #{Bot.format_date(date)}. " +
-            "You have freed parking #{'spot'.pluralize(parking_spot_names.count)} #{parking_spot_names.to_sentence}."
+          "You have freed parking #{'spot'.pluralize(parking_spot_names.count)} #{parking_spot_names.to_sentence}."
       end
 
       client.say(text: message, channel: data.channel)

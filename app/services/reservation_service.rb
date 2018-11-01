@@ -10,9 +10,15 @@ class ReservationService
     # ParkingSpot.joins(:)
   end
 
-  def create_reservation(user_id, from, to)
+  def create_reservation(user_id, from, to, parking_spot_name: nil)
     ActiveRecord::Base.transaction do
-      spot = ParkingSpot.available_spots(from, to).first
+      available_spots = ParkingSpot.available_spots(from, to)
+      spot = if parking_spot_name
+               available_spots.find_by(name: parking_spot_name)
+             else
+               available_spots.first
+             end
+
       raise NoAvailableParkingSpots unless spot
       Reservation.create!(user_id: user_id, from: from, to: to, parking_spot: spot)
     end
@@ -20,8 +26,8 @@ class ReservationService
 
   def capacity(date)
     [
-        Reservation.on_date(date),
-        ParkingSpot.available_spots(date, date)
+      Reservation.on_date(date),
+      ParkingSpot.available_spots(date, date)
     ]
   end
 end
