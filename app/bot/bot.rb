@@ -76,7 +76,11 @@ class Bot < SlackRubyBot::Bot
     desc 'I can reserve parking slot at Saldova like nobody else.'
 
     command 'reserve <date>' do
-      desc 'Reserves a parking slot on given day for you. If no date is given, today is used.'
+      desc 'Reserves a parking spot on given day for you. If no date is given, today is used.'
+    end
+
+    command 'reserve spot <slot number> <date>' do
+      desc 'Reserves specific parking spot on given day for you. If no date is given, today is used. For example `reserve spot 12 on Saturday`'
     end
 
     command 'capacity <date>' do
