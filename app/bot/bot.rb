@@ -1,6 +1,6 @@
 class Bot < SlackRubyBot::Bot
 
-  match /capacity\s*(?<date>.*)/i do |client, data, match|
+  match /^\s*capacity\s*(?<date>.*)/i do |client, data, match|
     date = Bot.parse_user_date(match[:date], client, data)
     if date
 
@@ -24,7 +24,7 @@ class Bot < SlackRubyBot::Bot
 
   end
 
-  match /reserve\s?(spot (?<spot>[0-9]+))?\s?(?<date>.*)/i do |client, data, match|
+  match /^\s*reserve\s?(spot (?<spot>[0-9]+))?\s?(?<date>.*)/i do |client, data, match|
     user = Bot.find_or_create_user(data.user, client)
     date = Bot.parse_user_date(match[:date], client, data)
     spot_name = match[:spot]
@@ -50,7 +50,7 @@ class Bot < SlackRubyBot::Bot
     end
   end
 
-  match /cancel\s?(?<date>.*)/i do |client, data, match|
+  match /^\s*cancel\s?(?<date>.*)/i do |client, data, match|
     user = Bot.find_or_create_user(data.user, client)
     date = Bot.parse_user_date(match[:date], client, data)
     if date
@@ -73,13 +73,13 @@ class Bot < SlackRubyBot::Bot
 
   help do
     title 'Parking Bot'
-    desc 'I can reserve parking slot at Saldova like nobody else.'
+    desc 'I can reserve parking spots at Saldova like nobody else.'
 
     command 'reserve <date>' do
       desc 'Reserves a parking spot on given day for you. If no date is given, today is used.'
     end
 
-    command 'reserve spot <slot number> <date>' do
+    command 'reserve spot <spot number> <date>' do
       desc 'Reserves specific parking spot on given day for you. If no date is given, today is used. For example `reserve spot 12 on Saturday`'
     end
 
