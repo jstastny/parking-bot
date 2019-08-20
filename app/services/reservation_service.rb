@@ -5,11 +5,6 @@ class ReservationService
   class NoAvailableParkingSpots < Error;
   end
 
-
-  def find_empty_lot(from, to)
-    # ParkingSpot.joins(:)
-  end
-
   def create_reservation(user_id, from, to, parking_spot_name: nil)
     ActiveRecord::Base.transaction do
       available_spots = ParkingSpot.available_spots(from, to)
