@@ -99,6 +99,7 @@ class Bot < SlackRubyBot::Bot
   end
 
   def self.parse_user_date(date_str, client, data)
+    puts "Current timezone: #{Time.zone}"
     if date_str.present?
       parsed = Chronic.parse(date_str)
       unless parsed
