@@ -3,6 +3,6 @@ class Reservation < ApplicationRecord
   belongs_to :user
 
   scope :on_date, ->(date) {
-    where('"from" <= ? and "to" >= ?', date, date)
+    where(from: date, to: date)
   }
 end
