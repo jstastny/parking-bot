@@ -15,7 +15,7 @@ class Bot < SlackRubyBot::Bot
       unless reservations.empty?
         message += "There are following reservations:\n"
         reservations.each do |reservation|
-          message += " • Parking spot #{reservation.parking_spot.name} reserved by #{reservation.user.display_name}\n"
+          message += " • Parking spot #{reservation.parking_spot.spot_display_name} reserved by #{reservation.user.display_name}\n"
         end
       end
 
@@ -32,7 +32,7 @@ class Bot < SlackRubyBot::Bot
       begin
         reservation = ReservationService.new.create_reservation(user.id, date, date, parking_spot_name: spot_name)
         client.say(
-          text: ":tada: I have reserved parking spot *#{reservation.parking_spot.name}* for you on: #{Bot.format_date(date)}. ",
+          text: ":tada: I have reserved parking spot *#{reservation.parking_spot.spot_display_name}* for you on: #{Bot.format_date(date)}. ",
           channel: data.channel
         )
 
