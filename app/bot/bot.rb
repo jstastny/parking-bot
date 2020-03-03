@@ -8,7 +8,7 @@ class Bot < SlackRubyBot::Bot
       message = "Capacity on #{Bot.format_date(date)}:\n"
       unless available_spots.empty?
         message += ":tada: There #{available_spots.count == 1 ? 'is' : 'are'} #{available_spots.count} available " +
-          "#{'spot'.pluralize(available_spots.count)}: #{available_spots.map(&:name).to_sentence}.\n"
+          "#{'spot'.pluralize(available_spots.count)}: #{available_spots.map(&:spot_display_name).to_sentence}.\n"
       else
         message += ":crying_cat_face: There are unfortunately no more available parking spots.\n"
       end
@@ -61,7 +61,7 @@ class Bot < SlackRubyBot::Bot
       if reservations.empty?
         message = "There are no reservations for you on #{Bot.format_date(date)}. Nothing to cancel."
       else
-        parking_spot_names = reservations.map(&:parking_spot).map(&:name)
+        parking_spot_names = reservations.map(&:parking_spot).map(&:spot_display_name)
         reservations.delete_all
         message = "I have cancelled all your #{'reservation'.pluralize(parking_spot_names.count)} on #{Bot.format_date(date)}. " +
           "You have freed parking #{'spot'.pluralize(parking_spot_names.count)} #{parking_spot_names.to_sentence}."
